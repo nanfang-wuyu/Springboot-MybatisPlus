@@ -1,0 +1,16 @@
+
+# DataSource Config
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://47.113.102.153:5432/project2
+    username: checker
+    password: 123456
+
+logging:
+  level:
+    root: warn
+    com.example.springboot: trace
+  pattern:
+    console: '%p%m%n'

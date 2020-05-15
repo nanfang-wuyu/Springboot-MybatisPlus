@@ -3,33 +3,46 @@ package com.example.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
+
+@Data
+@TableName("train")
 public class Train {
 
     @TableId("train_id")
-    private BigInteger train_id;
+    private BigInteger trainId;
 
-    private String train_number;
+    @TableField("train_number")
+    private String trainNumber;
 
-    private String train_name;
+    @TableField("train_name")
+    private String trainName;
 
-    private String train_type;
+    @TableField("train_type")
+    private String trainType;
 
-    private String train_depart_station;
+    @TableField("train_depart_station")
+    private String trainDepartStation;
 
-    private String train_arrive_station;
+    @TableField("train_arrive_station")
+    private String trainArriveStation;
 
-    private Date train_depart_date;
+    @TableField("train_depart_date")
+    private Date trainDepartDate;
 
-    private Date train_arrive_date;
+    @TableField("train_arrive_date")
+    private Date trainArriveDate;
 
-    private Time train_depart_time;
+    @TableField("train_depart_time")
+    private Time trainDepartTime;
 
-    private Time train_arrive_time;
+    @TableField("train_arrive_time")
+    private Time trainArriveTime;
 
 
 

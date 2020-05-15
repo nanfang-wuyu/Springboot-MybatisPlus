@@ -9,31 +9,41 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
-
+@Data
 public class Ticket {
 
     @TableId("ticket_id")
-    private BigInteger ticket_id;
+    private BigInteger ticketId;
 
-    private BigInteger order_id;
+    @TableField("order_id")
+    private BigInteger orderId;
 
-    private BigInteger train_id;
+    @TableField("train_id")
+    private BigInteger trainId;
 
-    private Double ticket_price;
+    @TableField("ticket_price")
+    private Double ticketPrice;
 
-    private Double ticket_entrance;
+    @TableField("ticket_entrance")
+    private Double ticketEntrance;
 
-    private Long depart_station;
+    @TableField("depart_station")
+    private Long departStation;
 
-    private Long arrive_station;
+    @TableField("arrive_station")
+    private Long arriveStation;
 
-    private String ticket_status;
+    @TableField("ticket_status")
+    private String ticketStatus;
 
-    private BigInteger passenger_id;
+    @TableField("passenger_id")
+    private BigInteger passengerId;
 
-    private String passenger_name;
+    @TableField("passenger_name")
+    private String passengerName;
 
-    private String ticket_type;
+    @TableField("ticket_type")
+    private String ticketType;
 
 
 

@@ -2,40 +2,59 @@ package com.example.springboot.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
+
+@Data
 public class Rate {
 
-    private Double start_mileage;
+    //@TableId
+    @TableField("start_mileage")
+    private Double startMileage;
 
-    private Double rate_hard;
+    @TableField("rate_hard")
+    private Double rateHard;
 
-    private Double rate_soft;
+    @TableField("rate_soft")
+    private Double rateSoft;
 
-    private Double rate_business;
+    @TableField("rate_business")
+    private Double rateBusiness;
 
-    private Double rate_hard_sleep_down;
+    @TableField("rate_hard_sleep_down")
+    private Double rateHardSleepDown;
 
-    private Double rate_hard_sleep_middle;
+    @TableField("rate_hard_sleep_middle")
+    private Double rateHardSleepMiddle;
 
-    private Double rate_hard_sleep_up;
+    @TableField("rate_hard_sleep_up")
+    private Double rateHardSleepUp;
 
-    private Double rate_soft_sleep_down;
+    @TableField("rate_soft_sleep_down")
+    private Double rateSoftSleepDown;
 
-    private Double rate_soft_sleep_up;
+    @TableField("rate_soft_sleep_up")
+    private Double rateSoftSleepUp;
 
-    private Double rate_first;
+    @TableField("rate_first")
+    private Double rateFirst;
 
-    private Double rate_second;
+    @TableField("rate_second")
+    private Double rateSecond;
 
-    private Double rate_super;
+    @TableField("rate_super")
+    private Double rateSuper;
 
-    private Double rate_float;
+    @TableField("rate_float")
+    private Double rateFloat;
 
-    private Double rate_insurance;
+    @TableField("rate_insurance")
+    private Double rateInsurance;
 
-    private Double rate_student;
+    @TableField("rate_student")
+    private Double rateStudent;
 
     @TableField(exist = false)
-    private Double final_price;
+    private Double finalPrice;
 
 }

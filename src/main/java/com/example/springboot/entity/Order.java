@@ -12,17 +12,22 @@ import java.sql.Time;
 public class Order {
 
     @TableId("order_id")
-    private Long order_id;
+    private Long orderId;
 
-    private Long user_id;
+    @TableField("user_id")
+    private Long userId;
 
-    private Date create_date;
+    @TableField("create_date")
+    private Date createDate;
 
-    private Time create_time;
+    @TableField("create_time")
+    private Time createTime;
 
-    private String order_status;
+    @TableField("order_status")
+    private String orderStatus;
 
-    private Double order_price;
+    @TableField("order_price")
+    private Double orderPrice;
 
 
 

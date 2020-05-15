@@ -14,3 +14,4 @@ logging:
     com.example.springboot: trace
   pattern:
     console: '%p%m%n'
+

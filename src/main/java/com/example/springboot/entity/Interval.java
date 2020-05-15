@@ -9,38 +9,53 @@ import java.sql.Date;
 import java.sql.Time;
 
 
+@Data
 public class Interval {
 
     @TableId("interval_id")
-    private BigInteger interval_id;
+    private BigInteger intervalId;
 
-    private BigInteger train_id;
+    @TableField("train_id")
+    private BigInteger trainId;
 
-    private Long station_depart;
+    @TableField("station_depart")
+    private Long stationDepart;
 
-    private Long station_arrive;
+    @TableField("station_arrive")
+    private Long stationArrive;
 
-    private Long rest_hard;
+    @TableField("rest_hard")
+    private Long restHard;
 
-    private Long rest_soft;
+    @TableField("rest_soft")
+    private Long restSoft;
 
-    private Long rest_business;
+    @TableField("rest_business")
+    private Long restBusiness;
 
-    private Long rest_hard_sleep_down;
+    @TableField("rest_hard_sleep_down")
+    private Long restHardSleepDown;
 
-    private Long rest_hard_sleep_middle;
+    @TableField("rest_hard_sleep_middle")
+    private Long restHardSleepMiddle;
 
-    private Long rest_hard_sleep_up;
+    @TableField("rest_hard_sleep_up")
+    private Long restHardSleepUp;
 
-    private Long rest_soft_sleep_down;
+    @TableField("rest_soft_sleep_down")
+    private Long restSoftSleepDown;
 
-    private Long rest_soft_sleep_up;
+    @TableField("rest_soft_sleep_up")
+    private Long restSoftSleepUp;
 
-    private Long rest_first;
+    @TableField("rest_first")
+    private Long restFirst;
 
-    private Long rest_second;
+    @TableField("rest_second")
+    private Long restSecond;
 
-    private Long rest_super;
+    @TableField("rest_super")
+    private Long restSuper;
 
 
 }

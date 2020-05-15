@@ -11,12 +11,14 @@ import java.math.BigInteger;
 public class User {
 
     @TableId("user_id")
-    private BigInteger user_id;
+    private BigInteger userId;
 
+    @TableField
     private String username;
 
     @TableField("phone_number")
     private BigInteger phone;
 
-    private BigInteger card_id;
+    @TableField("card_id")
+    private BigInteger cardId;
 }

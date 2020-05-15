@@ -9,23 +9,31 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
-
+@Data
 public class Train_station {
 
-    private BigInteger train_id;
+    @TableField("train_id")
+    private BigInteger trainId;
 
-    private Long station_id;
+    @TableField("station_id")
+    private Long stationId;
 
-    private Date each_depart_date;
+    @TableField("each_depart_date")
+    private Date eachDepartDate;
 
-    private Date each_arrive_date;
+    @TableField("each_arrive_date")
+    private Date eachArriveDate;
 
-    private Time each_depart_time;
+    @TableField("each_depart_time")
+    private Time eachDepartTime;
 
-    private Time each_arrive_time;
+    @TableField("each_arrive_time")
+    private Time eachArriveTime;
 
+    @TableField("distance")
     private Long distance;
 
+    @TableField("sequence")
     private Long sequence;
 
 

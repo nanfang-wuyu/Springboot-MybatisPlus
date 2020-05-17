@@ -164,29 +164,30 @@ public class RetrieveTest {
         String name1 = "北京西";
         String name2 = "广州南";
         Date date = Date.valueOf("2020-05-10");
-        String type = "动车";
-        List<Info> infoList = queryByAllConditionsPlus(name1,name2,date,type);
+        boolean onlyHigh = true;
+        List<Info> infoList = queryByAllConditionsPlus(name1,name2,date,onlyHigh);
         infoList.forEach(System.out::println);
         Info info = infoList.get(0);
-        Price price = queryPrice(info.getDeID(),info.getArID(),type,info.getTrainId());
+        Price price = queryPrice(info.getDeID(),info.getArID(),info.getTrainId());
         System.out.println(price);
     }
 
 
     public List<Info> queryByAllConditionsPlus (String name1, String name2,
-                                            Date date, String type){
+                                            Date date, boolean onlyHigh){
         if(name1.equals(name2)) return null;
-        List<Info> infoList = trainStationService.queryByAllConditions(name1,name2,date,type);
-        List<Train> trainList = trainService.queryByTS(infoList);
+        List<Info> infoList = trainStationService.queryByAllConditions(name1,name2,date,onlyHigh);
+        List<Train> trainList = trainService.queryByTS(infoList,onlyHigh);
+
         List<Info> finalInfoList = intervalService.findRestTickets(infoList,trainList);
 
         return finalInfoList;
     }
 
 
-    public Price queryPrice(Long SID1, Long SID2, String type, BigInteger trainId){
+    public Price queryPrice(Long SID1, Long SID2, BigInteger trainId){
 
-        Price price = trainStationService.queryAndCalculatePrice(SID1,SID2,type,trainId);
+        Price price = trainStationService.queryAndCalculatePrice(SID1,SID2, trainId);
         return price;
 
     }

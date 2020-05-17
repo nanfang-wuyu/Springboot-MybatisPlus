@@ -29,14 +29,26 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
 
 
     @Override
-    public List<Train> queryByTS(List<Info> infoList){
+    public List<Train> queryByTS(List<Info> infoList, boolean onlyHigh){
 
-
+        System.out.println("size:"+infoList.size());
         List<BigInteger>list = new ArrayList<>();
 
         for(Info info : infoList) list.add(info.getTrainId());
 
-        List<Train> list1 =  baseMapper.selectBatchIds(list);
+        QueryWrapper<Train> queryWrapper = new QueryWrapper<>();
+        List<Train> list1 = new ArrayList<>();
+
+        if(onlyHigh) {
+            queryWrapper.in("train_id", list).
+                    like("train_type", "动车").or().
+                    like("train_type", "高速列车").or().
+                    like("train_type", "城际动车");
+
+            list1 = baseMapper.selectList(queryWrapper);
+        }else {
+            list1 = baseMapper.selectBatchIds(list);
+        }
         list1.sort((o1, o2) -> {
             if(o1.getTrainDepartDate().before(o2.getTrainDepartDate())){
                 return -1;

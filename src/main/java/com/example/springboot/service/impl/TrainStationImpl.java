@@ -34,6 +34,9 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
     private TrainStationService trainStationService;
 
     @Autowired
+    private TrainService trainService;
+
+    @Autowired
     private RateService rateService;
 
     @Override
@@ -71,12 +74,27 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
 
     @Override
     public List<Info> queryByAllConditions (String name1, String name2,
-                                            Date date, String type){
+                                            Date date, boolean onlyHigh){
+        //long[]time = new long[6];
+        //time[0] = System.currentTimeMillis();
+
         List<Station> stationList1 = stationService.getStationByName(name1);
         List<Station> stationList2 = stationService.getStationByName(name2);
 
+
+        //time[1] = System.currentTimeMillis();
+
         List<Train_station> tsList1 = mergeList(stationList1,date);
         List<Train_station> tsList2 = mergeList(stationList2,date);
+
+        //time[2] = System.currentTimeMillis();
+
+        Map<Long,String> stationMap = new HashMap<>();
+        for(Station station : stationList1) stationMap.put(station.getStationId(),station.getStationName());
+        for(Station station : stationList2) stationMap.put(station.getStationId(),station.getStationName());
+
+        //time[3] = System.currentTimeMillis();
+
 
         List<Info> listIntersect = new ArrayList<>();
         for(int i = 0;i<tsList1.size();i++){
@@ -88,6 +106,8 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
                         Info info = new Info();
                         info.setDeID(ts1.getStationId());
                         info.setArID(ts2.getStationId());
+                        info.setTrainDepartStation(stationMap.get(ts1.getStationId()));
+                        info.setTrainArriveStation(stationMap.get(ts2.getStationId()));
                         info.setTrainId(ts1.getTrainId());
                         info.setTrainDepartDate(ts1.getEachDepartDate());
                         info.setTrainDepartTime(ts1.getEachDepartTime());
@@ -100,13 +120,17 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
             }
         }
 
+        //time[4] = System.currentTimeMillis();
+
+        //for(int i = 0;i<5;i++) System.out.println("time:"+time[i]);
+
         return listIntersect;
 
     }
 
 
     @Override
-    public Price queryAndCalculatePrice(Long SID1, Long SID2, String type, BigInteger trainId){
+    public Price queryAndCalculatePrice(Long SID1, Long SID2, BigInteger trainId){
 
 
         QueryWrapper<Train_station> queryWrapper1 = new QueryWrapper<>();
@@ -123,11 +147,11 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
 
         long journey = ts2.getDistance()-ts1.getDistance();
 
-        return calculatePrice(journey,type);
+        return calculatePrice(journey);
 
     }
 
-    public Price calculatePrice(long journey, String type){
+    public Price calculatePrice(long journey){
 
         List<Rate> rateList = rateService.list();
         Rate rate = rateList.get(0);

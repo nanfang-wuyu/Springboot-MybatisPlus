@@ -32,5 +32,5 @@ public interface TrainService extends IService<Train> {
     })
     List<Train> queryByTS(Train_station ts);*/
 
-    List<Train> queryByTS(List<Info> infoList);
+    List<Train> queryByTS(List<Info> infoList, boolean onlyHigh);
 }

@@ -20,8 +20,8 @@ public interface TrainStationService extends IService<Train_station> {
     List<Train_station> queryByStationIdAndDate(Long stationId, Date date);
 
     List<Info> queryByAllConditions(String name1, String name2,
-                                    Date date, String type);
+                                    Date date, boolean onlyHigh);
 
 
-    Price queryAndCalculatePrice(Long SID1, Long SID2, String type, BigInteger trainId);
+    Price queryAndCalculatePrice(Long SID1, Long SID2, BigInteger trainId);
 }

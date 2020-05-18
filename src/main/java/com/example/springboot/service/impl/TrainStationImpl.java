@@ -184,6 +184,17 @@ public class TrainStationImpl extends ServiceImpl<TrainStationMapper, Train_stat
         return b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
+    @Override
+    public List<Train_station> queryByTrainId(BigInteger trainId){
+
+
+        QueryWrapper <Train_station> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("train_id",trainId).orderByAsc("sequence");
+        //...
+        List<Train_station> train_stationsList = trainStationService.list(queryWrapper);
+        return train_stationsList;
+
+    }
 
 
 }

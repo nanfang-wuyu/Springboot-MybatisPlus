@@ -24,4 +24,7 @@ public interface TrainStationService extends IService<Train_station> {
 
 
     Price queryAndCalculatePrice(Long SID1, Long SID2, BigInteger trainId);
+
+    List<Train_station> queryByTrainId(BigInteger trainId);
+
 }

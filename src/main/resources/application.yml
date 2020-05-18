@@ -16,5 +16,5 @@ logging:
     console: '%p%m%n'
 
 server:
-  port: 80
+  port: 8080
 

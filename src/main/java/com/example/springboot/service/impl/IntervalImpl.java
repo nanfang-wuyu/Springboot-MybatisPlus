@@ -9,6 +9,7 @@ import com.example.springboot.entity.Train;
 import com.example.springboot.mapper.IntervalMapper;
 import com.example.springboot.service.IntervalService;
 import com.example.springboot.service.StationService;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,9 +68,11 @@ public class IntervalImpl extends ServiceImpl<IntervalMapper, Interval> implemen
         QueryWrapper<Interval> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("train_id",trainIdList).orderByAsc("interval_id");
         List<Interval> intervalList = intervalService.list(queryWrapper);
+        infoList.sort(Comparator.comparing(Info::getTrainId));
 
         int j = 0;
         for(int i = 0;i<infoList.size();i++){
+
             Info info = infoList.get(i);
             boolean start = false;
             for(;j<intervalList.size();j++){
@@ -165,6 +168,95 @@ public class IntervalImpl extends ServiceImpl<IntervalMapper, Interval> implemen
 
 
 
+    }
+
+
+    @Override
+    public boolean ensureRestTickets(String seatType, BigInteger trainId, Long deID, Long arID, int num){
+
+        QueryWrapper<Interval> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.orderByAsc("Interval_id");
+        queryWrapper.eq("train_id",trainId);
+
+        List<Interval> intervalList = intervalService.list(queryWrapper);
+
+        Iterator<Interval> intervalIterator = intervalList.iterator();
+        boolean start = false;
+        long rest = -1;
+        while(intervalIterator.hasNext()){
+            Interval interval = intervalIterator.next();
+            if(start){
+                rest = Math.min(findType(seatType,interval),rest);
+                if(interval.getStationArrive().equals(arID)) break;
+            }else if(interval.getStationDepart().equals(deID)){
+                start = true;
+                rest = findType(seatType, interval);
+                if(interval.getStationArrive().equals(arID)) break;
+            }
+        }
+
+        if(rest>=num){
+            intervalService.updateBatchById(intervalList);
+        }
+
+        return rest >= num;
+
+
+    }
+
+    public long findType(String type, Interval interval){
+        long rest;
+        switch (type){
+            case "hard":
+                rest = interval.getRestHard();
+                interval.setRestHard(rest-1);
+                break;
+            case "soft":
+                rest = interval.getRestSoft();
+                interval.setRestSoft(rest-1);
+                break;
+            case "business":
+                rest = interval.getRestBusiness();
+                interval.setRestBusiness(rest-1);
+                break;
+            case "hard_sleep_down":
+                rest = interval.getRestHardSleepDown();
+                interval.setRestHardSleepDown(rest-1);
+                break;
+            case "hard_sleep_middle":
+                rest = interval.getRestHardSleepMiddle();
+                interval.setRestHardSleepMiddle(rest-1);
+                break;
+            case "hard_sleep_up":
+                rest = interval.getRestHardSleepUp();
+                interval.setRestHardSleepUp(rest-1);
+                break;
+            case "soft_sleep_down":
+                rest = interval.getRestSoftSleepDown();
+                interval.setRestSoftSleepDown(rest-1);
+                break;
+            case "soft_sleep_up":
+                rest = interval.getRestSoftSleepUp();
+                interval.setRestSoftSleepUp(rest-1);
+                break;
+            case "first":
+                rest = interval.getRestFirst();
+                interval.setRestFirst(rest-1);
+                break;
+            case "second":
+                rest = interval.getRestSecond();
+                interval.setRestSecond(rest-1);
+                break;
+            case "super":
+                rest = interval.getRestSuper();
+                interval.setRestSuper(rest-1);
+                break;
+            default: rest = -1;
+
+        }
+
+        return rest;
     }
 
 }

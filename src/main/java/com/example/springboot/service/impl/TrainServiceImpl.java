@@ -27,6 +27,9 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
     @Autowired
     private TrainStationService trainStationService;
 
+    @Autowired
+    private TrainService trainService;
+
 
     @Override
     public List<Train> queryByTS(List<Info> infoList, boolean onlyHigh){
@@ -49,7 +52,7 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
         }else {
             list1 = baseMapper.selectBatchIds(list);
         }
-        list1.sort((o1, o2) -> {
+        /*list1.sort((o1, o2) -> {
             if(o1.getTrainDepartDate().before(o2.getTrainDepartDate())){
                 return -1;
             }else if(o1.getTrainDepartDate().after(o2.getTrainDepartDate())){
@@ -61,8 +64,19 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
                     return 1;
                 }else return 0;
             }
-        });
+        });*/
         return list1;
+    }
+
+    @Override
+    public BigInteger queryByNum(String trainNum){
+
+        QueryWrapper<Train> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("train_number",trainNum);
+        List<Train> trainList = trainService.list(queryWrapper);
+        if(trainList.size()==0) return null;
+        else return trainList.get(0).getTrainId();
+
     }
 
 }

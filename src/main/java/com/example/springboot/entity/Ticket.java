@@ -1,6 +1,7 @@
 package com.example.springboot.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.sql.Time;
 @Data
 public class Ticket {
 
-    @TableId("ticket_id")
+    @TableId(value = "ticket_id", type = IdType.AUTO)
     private BigInteger ticketId;
 
     @TableField("order_id")
@@ -24,9 +25,6 @@ public class Ticket {
     @TableField("ticket_price")
     private Double ticketPrice;
 
-    @TableField("ticket_entrance")
-    private Double ticketEntrance;
-
     @TableField("depart_station")
     private Long departStation;
 
@@ -37,7 +35,7 @@ public class Ticket {
     private String ticketStatus;
 
     @TableField("passenger_id")
-    private BigInteger passengerId;
+    private String passengerId;
 
     @TableField("passenger_name")
     private String passengerName;
@@ -45,6 +43,7 @@ public class Ticket {
     @TableField("ticket_type")
     private String ticketType;
 
-
+    @TableField("seat_type")
+    private String seatType;
 
 }

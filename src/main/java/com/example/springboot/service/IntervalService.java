@@ -16,4 +16,6 @@ public interface IntervalService extends IService<Interval> {
 
     List<Info>  findRestTickets(List<Info> infoList,List<Train> trainList);
 
+    boolean ensureRestTickets(String seatType, BigInteger trainId, Long deID, Long arID, int num);
+
 }

@@ -3,13 +3,11 @@ package com.example.springboot;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.springboot.entity.*;
 import com.example.springboot.mapper.StationMapper;
 import com.example.springboot.mapper.TrainMapper;
-import com.example.springboot.service.IntervalService;
-import com.example.springboot.service.StationService;
-import com.example.springboot.service.TrainService;
-import com.example.springboot.service.TrainStationService;
+import com.example.springboot.service.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -44,6 +43,15 @@ public class RetrieveTest {
 
     @Autowired
     private IntervalService intervalService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TicketService ticketService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Test
     public void testSelect() {
@@ -190,6 +198,87 @@ public class RetrieveTest {
         Price price = trainStationService.queryAndCalculatePrice(SID1,SID2, trainId);
         return price;
 
+    }
+
+
+    @Test
+    public void getUserByOpenId(){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("openid","xx");
+        List<User> userList = userService.list(queryWrapper);
+        if(userList.size()>0) System.out.println(userList.get(0));
+    }
+
+    @Test
+    public void addUser(){
+        String name = "liuXing";
+        String openId = "xxx?!";
+        User user = new User();
+        user.setUsername(name);
+        user.setOpenid(openId);
+        userService.save(user);
+    }
+
+    @Test
+    public void addOrder(){
+
+        Order order = new Order();
+        //order.setOrderId(BigInteger.valueOf(0));
+        order.setUserId(BigInteger.valueOf(2));
+        order.setCreateDate(Date.valueOf("2020-05-10"));
+        order.setCreateTime(Time.valueOf("17:35:35"));
+        order.setOrderStatus("unfinished");
+        order.setOrderPrice(233.3);
+        orderService.save(order);
+    }
+
+    @Test
+    public void makeTickets(){
+
+
+        List<Passenger> passengerList = new ArrayList<>();
+        passengerList.add(new Passenger("name1","111x",true));
+        passengerList.add(new Passenger("name2","112x",false));
+
+        BigInteger userId = BigInteger.valueOf(2);
+        String seatType = "first";
+        Info trainInfo = trainStationService.
+                queryByAllConditions("重庆","深圳", Date.valueOf("2020-05-10"),true).
+                get(0);
+        boolean isPaid = true;
+        double price = 233.3;
+
+        boolean enough = intervalService.ensureRestTickets(seatType,trainInfo.getTrainId(),
+                trainInfo.getDeID(),trainInfo.getArID(),passengerList.size());
+        if(!enough) {
+            System.out.println(2);
+        }
+
+        else {
+            ticketService.addTicket(passengerList, userId, seatType, trainInfo, isPaid, price);
+            System.out.println(1);
+        }
+
+
+
+    }
+
+    /*@Test
+    public void addUser(){
+        userService.addUser("name5", "openId");
+    }*/
+
+    @Test
+    public void timeTest(){
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("task  run:"+ new java.util.Date());
+            }
+        };
+        Timer timer = new Timer();
+        //安排指定的任务在指定的时间开始进行重复的固定延迟执行。这里是每3秒执行一次
+        timer.schedule(timerTask,10,3000);
     }
 
 }

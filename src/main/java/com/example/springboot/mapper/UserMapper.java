@@ -12,8 +12,8 @@ import java.math.BigInteger;
 @Component (value = "userMapper")
 public interface UserMapper extends BaseMapper<User> {
 
-    User getUserById(@Param("id") long id);
+    /*User getUserById(@Param("id") long id);
 
-    void addUser(String name, BigInteger phone, BigInteger card);
+    void addUser(String name, BigInteger phone, BigInteger card);*/
 
 }

@@ -68,7 +68,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         if(passengerList.size() == 0) return;
 
         String status = "";
-        if(isPaid) status = "unfinished";
+        if(isPaid) status = "paid";
         else status = "unpaid";
 
 
@@ -105,7 +105,7 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
             ticket.setTicketPrice(priceArr[i]);
             ticket.setDepartStation(trainInfo.getDeID());
             ticket.setArriveStation(trainInfo.getArID());
-            ticket.setTicketStatus("unfinished");
+            ticket.setTicketStatus(status);
             ticket.setPassengerId(passenger.getCardId());
             ticket.setPassengerName(passenger.getName());
             ticket.setSeatType(seatType);
@@ -157,5 +157,31 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         return jsonObject;
     }
 
+
+
+    @Override
+    public boolean cancelTicket(BigInteger ticketId){
+
+        Ticket ticket = ticketService.getById(ticketId);
+
+        Train_station train_station = trainStationService.getById(ticket.getTrainId());
+
+        if(ticket.getTicketStatus().equals("paid")){
+            java.util.Date date = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            java.sql.Time sqlTime = new java.sql.Time(date.getTime());
+            if(sqlDate.equals(train_station.getEachDepartDate())){
+                if(train_station.getEachDepartTime().getTime()/60/1000-sqlTime.getTime()/60/1000
+                        <30){
+                    return false;
+                }
+            }else if(sqlDate.after(train_station.getEachDepartDate()))
+                return false;
+        }
+
+        ticket.setTicketStatus("cancelled");
+        ticketService.updateById(ticket);
+        return true;
+    }
 
 }

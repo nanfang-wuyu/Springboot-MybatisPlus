@@ -29,11 +29,14 @@ public class OrderController {
         return orderService.queryUserOrders(userId);
     }
 
-    /*@GetMapping("/cancelOrder/{orderId}")
+    @GetMapping("/cancelOrder/{orderId}")
     public boolean cancelOrder(@PathVariable BigInteger orderId){
+        return orderService.cancelOrder(orderId);
+    }
 
-
-
-    }*/
+    @GetMapping("/payOrder/{orderId}")
+    public boolean payOrder(@PathVariable BigInteger  orderId){
+        return orderService.payOrder(orderId);
+    }
 
 }

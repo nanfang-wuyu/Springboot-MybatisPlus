@@ -24,4 +24,6 @@ public interface TicketService extends IService<Ticket> {
                    Info trainInfo, boolean isPaid, double price);
 
     JSONObject queryOrderTickets(BigInteger orderId);
+
+    boolean cancelTicket(BigInteger ticketId);
 }

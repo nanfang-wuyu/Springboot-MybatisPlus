@@ -15,6 +15,7 @@ import com.example.springboot.service.TrainService;
 import com.example.springboot.service.TrainStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigInteger;
 import java.sql.Date;
@@ -87,4 +88,44 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return jsonObjectList;
     }
 
+
+    @Override
+    public boolean cancelOrder(BigInteger orderId){
+
+        Order order = orderService.getById(orderId);
+        QueryWrapper<Ticket> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_id",orderId);
+        List<Ticket> ticketList = ticketService.list(queryWrapper);
+        Train_station train_station = trainStationService.getById(ticketList.get(0).getTrainId());
+
+
+        if(order.getOrderStatus().equals("paid")){
+            java.util.Date date = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            java.sql.Time sqlTime = new java.sql.Time(date.getTime());
+            if(sqlDate.equals(train_station.getEachDepartDate())){
+                if(train_station.getEachDepartTime().getTime()/60/1000-sqlTime.getTime()/60/1000
+                <30){
+                    return false;
+                }
+            }else if(sqlDate.after(train_station.getEachDepartDate()))
+                return false;
+        }
+
+        order.setOrderStatus("cancelled");
+        orderService.updateById(order);
+        for(Ticket ticket : ticketList) ticket.setTicketStatus("cancelled");
+        ticketService.updateBatchById(ticketList);
+        return true;
+    }
+
+    @Override
+    public boolean payOrder(BigInteger orderId){
+        Order order = orderService.getById(orderId);
+        if(order.getOrderStatus().equals("unpaid")){
+            order.setOrderStatus("paid");
+            orderService.updateById(order);
+        }else return false;
+        return true;
+    }
 }

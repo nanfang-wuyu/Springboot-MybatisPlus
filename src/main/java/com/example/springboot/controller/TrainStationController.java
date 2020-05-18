@@ -65,7 +65,7 @@ public class TrainStationController {
 
                 long subTime;
                 if(deTime == null || arTime == null) subTime = 0;
-                else subTime = (arTime.getTime() - deTime.getTime())/60/1000;
+                else subTime = (deTime.getTime() - arTime.getTime())/60/1000;
 
                 Iterator<Station> stationIterator = stationList.iterator();
                 while(stationIterator.hasNext()){

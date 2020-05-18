@@ -57,4 +57,9 @@ public class TicketController {
         return ticketService.queryOrderTickets(orderId);
     }
 
+    @GetMapping("/cancelTicket/{ticketId}")
+    public boolean cancelTicket(@PathVariable BigInteger ticketId){
+        return ticketService.cancelTicket(ticketId);
+    }
+
 }

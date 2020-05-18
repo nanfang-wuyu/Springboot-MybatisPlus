@@ -21,4 +21,8 @@ public interface OrderService extends IService<Order> {
 
 
     List<JSONObject> queryUserOrders(BigInteger userId);
+
+    boolean cancelOrder(BigInteger orderId);
+
+    boolean payOrder(BigInteger orderId);
 }

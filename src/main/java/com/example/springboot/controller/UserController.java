@@ -43,6 +43,10 @@ public class UserController {
     }
 
 
+    @PostMapping("/testUser/{str}")
+    public String testUser(@PathVariable String str, @RequestBody User user){
+        return user.getOpenid();
+    }
 
 
 }

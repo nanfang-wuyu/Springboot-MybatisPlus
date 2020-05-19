@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springboot.entity.*;
 import com.example.springboot.mapper.TicketMapper;
-import com.example.springboot.service.OrderService;
-import com.example.springboot.service.RateService;
-import com.example.springboot.service.TicketService;
-import com.example.springboot.service.TrainStationService;
+import com.example.springboot.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +33,9 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
 
     @Autowired
     private TrainStationService trainStationService;
+
+    @Autowired
+    private StationService stationService;
 
 
     /*public boolean ensureNoConflict(List<Passenger> passengerList, Date deDate, Date arDate,
@@ -132,17 +132,25 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         QueryWrapper<Ticket> ticketQueryWrapper = new QueryWrapper<>();
         ticketQueryWrapper.eq("order_id",orderId);
         List<Ticket> ticketList = ticketService.list(ticketQueryWrapper);
-        jsonObject.put("arStation",ticketList.get(0).getArriveStation());
+        String name = stationService.getStationById(ticketList.get(0).getArriveStation()).getStationName();
+        jsonObject.put("arStation",name);
         List<Passenger> passengerList = new ArrayList<>();
+        List<Double> priceList = new ArrayList<>();
+        List<BigInteger> ticketIds = new ArrayList<>();
         for(Ticket ticket : ticketList) {
             boolean isStudent = false;
             if(ticket.getSeatType().equals("student")) isStudent = true;
             passengerList.add(new Passenger(ticket.getPassengerName(),
                     ticket.getPassengerId(), isStudent));
+            priceList.add(ticket.getTicketPrice());
+            ticketIds.add(ticket.getTicketId());
         }
 
 
         jsonObject.put("passengerList",passengerList);
+        jsonObject.put("priceList",priceList);
+        jsonObject.put("ticketIdList",ticketIds);
+
         Order order = orderService.getById(orderId);
         jsonObject.put("createDate",order.getCreateDate());
 

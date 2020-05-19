@@ -26,7 +26,9 @@ public class StationServiceImpl extends ServiceImpl<StationMapper, Station> impl
     @Override
     public List<Station> getStationByName(String name){
         QueryWrapper<Station> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("station_name",name);
+        queryWrapper.like("station_name",name).or()
+        .like("station_pinyin_headerchar",name).or()
+        .like("station_pinyin",name);
         List<Station> stationList = baseMapper.selectList(queryWrapper);
         return stationList;
     }

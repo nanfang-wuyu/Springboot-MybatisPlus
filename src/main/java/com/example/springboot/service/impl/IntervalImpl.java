@@ -47,8 +47,7 @@ public class IntervalImpl extends ServiceImpl<IntervalMapper, Interval> implemen
             Info info = infoIterator.next();
             Iterator<Train> trainIterator = trainList.iterator();
             boolean match = false;
-            while (trainIterator.hasNext()){
-                Train train = trainIterator.next();
+            for(Train train : trainList){
                 if(info.getTrainId().equals(train.getTrainId())){
                     trainIdList.add(info.getTrainId());
                     info.setTrainNumber(train.getTrainNumber());
@@ -71,10 +70,19 @@ public class IntervalImpl extends ServiceImpl<IntervalMapper, Interval> implemen
         infoList.sort(Comparator.comparing(Info::getTrainId));
 
         int j = 0;
+        int last = j;
         for(int i = 0;i<infoList.size();i++){
 
             Info info = infoList.get(i);
             boolean start = false;
+
+            if(i!=0){
+                if(infoList.get(i).getTrainId().equals(infoList.get(i-1).getTrainId())){
+                    j = last;
+                }
+            }
+            last = j;
+
             for(;j<intervalList.size();j++){
                 Interval interval = intervalList.get(j);
                 if(info.getTrainId().equals(interval.getTrainId())) {

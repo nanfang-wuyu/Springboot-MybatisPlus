@@ -9,10 +9,7 @@ import com.example.springboot.entity.Ticket;
 import com.example.springboot.entity.Train;
 import com.example.springboot.entity.Train_station;
 import com.example.springboot.mapper.OrderMapper;
-import com.example.springboot.service.OrderService;
-import com.example.springboot.service.TicketService;
-import com.example.springboot.service.TrainService;
-import com.example.springboot.service.TrainStationService;
+import com.example.springboot.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +35,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private TrainStationService trainStationService;
+
+    @Autowired
+    private StationService stationService;
 
 
     @Override
@@ -72,7 +72,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             QueryWrapper<Ticket> ticketQueryWrapper = new QueryWrapper<>();
             ticketQueryWrapper.eq("order_id",order.getOrderId());
             Ticket ticket = ticketService.getOne(ticketQueryWrapper,false);
-            jsonObject.put("deStation",ticket.getDepartStation());
+            String name = stationService.getStationById(ticket.getDepartStation()).getStationName();
+            jsonObject.put("deStation",name);
             jsonObject.put("seatType",ticket.getSeatType());
             Train train = trainService.getById(ticket.getTrainId());
             jsonObject.put("trainNum",train.getTrainNumber());

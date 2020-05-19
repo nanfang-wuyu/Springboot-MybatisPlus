@@ -281,4 +281,12 @@ public class RetrieveTest {
         timer.schedule(timerTask,10,3000);
     }
 
+
+    @Test
+    public void getInfo(){
+        Info trainInfo = trainStationService.
+                queryByAllConditions("重庆","深圳", Date.valueOf("2020-05-10"),true).
+                get(0);
+        System.out.println(trainInfo);
+    }
 }

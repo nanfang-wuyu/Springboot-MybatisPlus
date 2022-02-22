@@ -35,4 +35,9 @@ public interface TrainService extends IService<Train> {
     List<Train> queryByTS(List<Info> infoList, boolean onlyHigh);
 
     BigInteger queryByNum(String trainNum);
+
+
+    @Options(useGeneratedKeys = true,keyProperty = "train_id",keyColumn = "train_id")
+    void copyData();
+
 }

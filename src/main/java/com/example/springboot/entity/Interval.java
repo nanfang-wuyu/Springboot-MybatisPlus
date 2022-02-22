@@ -1,5 +1,6 @@
 package com.example.springboot.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.sql.Time;
 @Data
 public class Interval {
 
-    @TableId("interval_id")
+    @TableId(value = "interval_id", type = IdType.AUTO)
     private BigInteger intervalId;
 
     @TableField("train_id")

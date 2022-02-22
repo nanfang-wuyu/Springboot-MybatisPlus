@@ -2,12 +2,10 @@ package com.example.springboot.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.springboot.entity.Info;
-import com.example.springboot.entity.Station;
-import com.example.springboot.entity.Train;
-import com.example.springboot.entity.Train_station;
+import com.example.springboot.entity.*;
 import com.example.springboot.mapper.StationMapper;
 import com.example.springboot.mapper.TrainMapper;
+import com.example.springboot.service.IntervalService;
 import com.example.springboot.service.StationService;
 import com.example.springboot.service.TrainService;
 import com.example.springboot.service.TrainStationService;
@@ -30,6 +28,9 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
     @Autowired
     private TrainService trainService;
 
+    @Autowired
+    private IntervalService intervalService;
+
 
     @Override
     public List<Train> queryByTS(List<Info> infoList, boolean onlyHigh){
@@ -42,6 +43,7 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
         QueryWrapper<Train> queryWrapper = new QueryWrapper<>();
         List<Train> list1 = new ArrayList<>();
 
+        System.out.println(onlyHigh);
         if(onlyHigh) {
             queryWrapper.in("train_id", list).
                     like("train_type", "动车").or().
@@ -78,5 +80,96 @@ public class TrainServiceImpl extends ServiceImpl<TrainMapper, Train> implements
         else return trainList.get(0).getTrainId();
 
     }
+
+
+
+
+    @Override
+    public void copyData(){
+        /*List<Train> baseList = trainService.list();
+        long cnt = baseList.size();
+        List<Train> trainList = new ArrayList<>();
+        for(int i = 1;i<30;i++){
+
+            for(Train train : baseList){
+                Train newTrain = new Train();
+                newTrain.setTrainName(train.getTrainName());
+                newTrain.setTrainNumber(train.getTrainNumber());
+                newTrain.setTrainType(train.getTrainType());
+                newTrain.setTrainDepartStation(train.getTrainDepartStation());
+                newTrain.setTrainArriveStation(train.getTrainArriveStation());
+                newTrain.setTrainDepartDate(Date.valueOf
+                        (train.getTrainDepartDate().toLocalDate().plusDays(i)));
+                newTrain.setTrainArriveDate(Date.valueOf
+                        (train.getTrainArriveDate().toLocalDate().plusDays(i)));
+                newTrain.setTrainDepartTime(train.getTrainDepartTime());
+                newTrain.setTrainArriveTime(train.getTrainArriveTime());
+                trainList.add(newTrain);
+            }
+        }
+        trainService.saveBatch(trainList);*/
+
+        long cnt = 10070L;
+
+        /*List<Interval> intervalList = new ArrayList<>();
+        for(int i = 1;i<30;i++){
+            List<Interval> baseIntervalList = intervalService.list();
+            for(Interval interval : baseIntervalList){
+                Interval newInterval = new Interval();
+                newInterval.setTrainId(interval.getTrainId()
+                        .add(BigInteger.valueOf(i * cnt)));
+                newInterval.setStationDepart(interval.getStationDepart());
+                newInterval.setStationArrive(interval.getStationArrive());
+                newInterval.setRestHard(interval.getRestHard());
+                newInterval.setRestSoft(interval.getRestSoft());
+                newInterval.setRestHardSleepDown(interval.getRestHardSleepDown());
+                newInterval.setRestHardSleepMiddle(interval.getRestHardSleepMiddle());
+                newInterval.setRestHardSleepUp(interval.getRestHardSleepUp());
+                newInterval.setRestSoftSleepDown(interval.getRestSoftSleepDown());
+                newInterval.setRestSoftSleepUp(interval.getRestSoftSleepUp());
+                newInterval.setRestBusiness(interval.getRestBusiness());
+                newInterval.setRestFirst(interval.getRestFirst());
+                newInterval.setRestSecond(interval.getRestSecond());
+                newInterval.setRestSuper(interval.getRestSuper());
+                intervalList.add(newInterval);
+            }
+            intervalService.saveBatch(intervalList);
+        }*/
+
+
+
+        List<Train_station> baseTrainStationList = trainStationService.list();
+
+        for(int i = 11;i<12;i++){
+            List<Train_station> trainStationList = new ArrayList<>();
+            for(Train_station trainStation : baseTrainStationList){
+                Train_station newTrainStation = new Train_station();
+                newTrainStation.setTrainId(trainStation.getTrainId()
+                        .add(BigInteger.valueOf(i * cnt)));
+                newTrainStation.setStationId(trainStation.getStationId());
+                newTrainStation.setDistance(trainStation.getDistance());
+                newTrainStation.setSequence(trainStation.getSequence());
+                newTrainStation.setEachDepartTime(trainStation.getEachDepartTime());
+                newTrainStation.setEachArriveTime(trainStation.getEachArriveTime());
+                newTrainStation.setEachDepartDate(Date.valueOf
+                        (trainStation.getEachDepartDate().toLocalDate().plusDays(i)));
+                newTrainStation.setEachArriveDate(Date.valueOf
+                        (trainStation.getEachArriveDate().toLocalDate().plusDays(i)));
+
+                trainStationList.add(newTrainStation);
+
+            }
+            trainStationService.saveBatch(trainStationList);
+        }
+
+
+
+
+
+
+
+
+    }
+
 
 }

@@ -237,8 +237,8 @@ public class RetrieveTest {
 
 
         List<Passenger> passengerList = new ArrayList<>();
-        passengerList.add(new Passenger("name1","111x",true));
-        passengerList.add(new Passenger("name2","112x",false));
+        passengerList.add(new Passenger("wanli","666x",true));
+        passengerList.add(new Passenger("tong","112x",false));
 
         BigInteger userId = BigInteger.valueOf(2);
         String seatType = "first";
@@ -288,5 +288,38 @@ public class RetrieveTest {
                 queryByAllConditions("重庆","深圳", Date.valueOf("2020-05-10"),true).
                 get(0);
         System.out.println(trainInfo);
+    }
+
+
+    @Test
+    public void copyTest(){
+        List<Train> baseList = trainService.list();
+        long cnt = baseList.size();
+        List<Train> trainList = new ArrayList<>();
+        for(int i = 1;i<2;i++){
+
+            for(Train train : baseList){
+                Train newTrain = new Train();
+                newTrain.setTrainName(train.getTrainName());
+                newTrain.setTrainNumber(train.getTrainNumber());
+                newTrain.setTrainType(train.getTrainType());
+                newTrain.setTrainDepartStation(train.getTrainDepartStation());
+                newTrain.setTrainArriveStation(train.getTrainArriveStation());
+                newTrain.setTrainDepartDate(Date.valueOf
+                        (train.getTrainDepartDate().toLocalDate().plusDays(i)));
+                newTrain.setTrainArriveDate(Date.valueOf
+                        (train.getTrainArriveDate().toLocalDate().plusDays(i)));
+                newTrain.setTrainDepartTime(train.getTrainDepartTime());
+                newTrain.setTrainArriveTime(train.getTrainArriveTime());
+                trainList.add(newTrain);
+            }
+        }
+        trainService.saveBatch(trainList);
+    }
+
+
+    @Test
+    public void copyData(){
+        trainService.copyData();
     }
 }

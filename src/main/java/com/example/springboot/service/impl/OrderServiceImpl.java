@@ -97,7 +97,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         QueryWrapper<Ticket> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_id",orderId);
         List<Ticket> ticketList = ticketService.list(queryWrapper);
-        Train_station train_station = trainStationService.getById(ticketList.get(0).getTrainId());
+        QueryWrapper<Train_station> train_stationQueryWrapper = new QueryWrapper<>();
+        train_stationQueryWrapper.eq("train_id",ticketList.get(0).getTrainId())
+                .eq("station_id",ticketList.get(0).getDepartStation());
+        Train_station train_station = trainStationService.getOne(train_stationQueryWrapper,false);
 
 
         if(order.getOrderStatus().equals("paid")){

@@ -1,6 +1,7 @@
 package com.example.springboot.entity;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +15,7 @@ import java.sql.Time;
 @TableName("train")
 public class Train {
 
-    @TableId("train_id")
+    @TableId(value = "train_id", type = IdType.AUTO)
     private BigInteger trainId;
 
     @TableField("train_number")
@@ -27,10 +28,10 @@ public class Train {
     private String trainType;
 
     @TableField("train_depart_station")
-    private String trainDepartStation;
+    private BigInteger trainDepartStation;
 
     @TableField("train_arrive_station")
-    private String trainArriveStation;
+    private BigInteger trainArriveStation;
 
     @TableField("train_depart_date")
     private Date trainDepartDate;

@@ -2,7 +2,7 @@ package com.example.springboot;
 
 import com.example.springboot.entity.User;
 import com.example.springboot.mapper.UserMapper;
-import com.example.springboot.service.delayTest.TestAsyncService;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,17 +28,5 @@ public class SampleTest {
         userList.forEach(System.out::println);
     }
 
-    @Autowired
-    TestAsyncService testAsyncService;
-
-    @Test
-    public void test() throws IOException, InterruptedException {
-        System.out.println("发货通知调用开始！");
-
-        int[] taskArrays = new int[]{2000, 5000, 10000};
-        testAsyncService.testNotice(taskArrays);
-
-        System.out.println("已经开始通知,异步执行通知");
-    }
 
 }
